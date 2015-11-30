@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Menu">
+        <menu>
+            <item android:id="@+id/nav_profile" android:icon="@android:drawable/ic_menu_myplaces"
+                android:title="Profile" />
+            <item android:id="@+id/nav_search" android:icon="@android:drawable/ic_menu_search"
+                android:title="Search" />
+            <item android:id="@+id/nav_saved" android:icon="@android:drawable/btn_star_big_on"
+                android:title="Saved" />
+            <item android:id="@+id/nav_logout" android:icon="@android:drawable/ic_menu_revert"
+                android:title="Logout" />
+        </menu>
+    </item>
+
+</menu>
