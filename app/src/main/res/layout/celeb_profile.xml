@@ -6,24 +6,23 @@
     android:orientation="vertical"
     android:padding="20dp">
 
-    <!--This was below: android:background="@drawable/rounded_button"-->
+
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Save"
         android:textColor="#fff"
-
+        android:background="@drawable/rounded_button"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/profile_img"
         android:layout_toStartOf="@+id/profile_img" />
 
-    <!--This was below: android:background="@drawable/rounded_button"-->
     <Button
         android:id="@+id/unsaveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:background="@drawable/rounded_button"
         android:text="Unsave"
         android:textColor="#fff"
         android:layout_alignParentBottom="true"

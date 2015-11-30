@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mydb.closeDB();
                 mydb.deleteDB(getApplicationContext());
                 buildDB(mydb);
             }

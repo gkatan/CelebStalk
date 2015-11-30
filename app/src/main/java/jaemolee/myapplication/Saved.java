@@ -49,7 +49,7 @@ public class Saved extends AppCompatActivity
 
         mydb = new DBHelper(this);
 
-        listView = (ListView)findViewById(R.id.savedList);
+        listView = (ListView)findViewById(R.id.nameList);
 
         ArrayList<Profile> list = mydb.getAllProfiles();
 

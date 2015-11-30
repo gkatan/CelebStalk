@@ -63,7 +63,7 @@ public class CustomAdapter extends BaseAdapter {
         view = inflater.inflate(R.layout.search_box, null);
     }
 
-        //TODO Should be: Name, Image. Maybe a short description? 
+        //TODO Should be: Name, Image. Maybe a short description?
 
         TextView name = (TextView) view.findViewById(R.id.pname);
         //TextView desc = (TextView) view.findViewById(R.id.note);
