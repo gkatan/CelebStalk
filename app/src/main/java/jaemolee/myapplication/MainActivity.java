@@ -13,10 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     DBHelper mydb;
+    Button b1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +41,28 @@ public class MainActivity extends AppCompatActivity
         mydb = new DBHelper(this);
         int count = mydb.getProfileCount();
 
+
+        b1 = (Button) findViewById(R.id.resetdb);
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mydb.deleteDB(getApplicationContext());
+                buildDB(mydb);
+            }
+        });
+
         if (count < 1) {
-            String default_image = "android.resource:/jaemolee.myapplication\\" + "+" +  "R.drawable.blankface";
-            mydb.insertProfile(new Profile ("Kanye West", "rapper & designer", default_image, 0));
-            mydb.insertProfile(new Profile("Barack Obama", "President of US", default_image, 0));
-            mydb.insertProfile(new Profile("Hillary Clinton", "Secretary of State 2009-2013", default_image, 0));
-            mydb.insertProfile(new Profile("Taylor Swift", "singer & songwriter", default_image, 0));
-            mydb.insertProfile(new Profile("Daniel Radcliffe", "English actor", default_image, 0));
+            buildDB(mydb);
         }
+    }
+
+    public void buildDB(DBHelper mydb) {
+        String default_image = "android.resource:/jaemolee.myapplication\\" + "+" +  "R.drawable.blankface";
+        mydb.insertProfile(new Profile ("Kanye West", "rapper & designer", default_image, 0));
+        mydb.insertProfile(new Profile("Barack Obama", "President of US", default_image, 0));
+        mydb.insertProfile(new Profile("Hillary Clinton", "Secretary of State 2009-2013", default_image, 0));
+        mydb.insertProfile(new Profile("Taylor Swift", "singer & songwriter", default_image, 0));
+        mydb.insertProfile(new Profile("Daniel Radcliffe", "English actor", default_image, 0));
     }
 
     @Override
