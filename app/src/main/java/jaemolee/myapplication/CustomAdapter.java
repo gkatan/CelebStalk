@@ -17,7 +17,7 @@ import java.util.Date;
 public class CustomAdapter extends BaseAdapter {
 
     ArrayList<Profile> entries;
-     Context context;
+    Context context;
     DBHelper mydb;
 
     public CustomAdapter(Context context, String type) {
