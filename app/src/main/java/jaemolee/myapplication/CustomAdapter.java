@@ -63,8 +63,7 @@ public class CustomAdapter extends BaseAdapter {
         view = inflater.inflate(R.layout.search_box, null);
     }
 
-
-        // TODO Should be: Name, Image, Description, maybe a stalking 'flag' icon?. Can add date to the Profile object if desired.
+        //TODO Should be: Name, Image, Description, maybe a stalking 'flag' icon?. Can add date to the Profile object if desired.
 
         TextView name = (TextView) view.findViewById(R.id.pname);
         TextView desc = (TextView) view.findViewById(R.id.note);
