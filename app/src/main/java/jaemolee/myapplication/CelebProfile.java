@@ -27,7 +27,9 @@ import java.sql.SQLException;
 public class CelebProfile extends Activity implements View.OnClickListener {
 
     Button saveBT;
-    String name;
+    String name, desc, image;
+    int sflag;
+
     DBHelper mydb;
     WebView webView;
 
@@ -45,6 +47,11 @@ public class CelebProfile extends Activity implements View.OnClickListener {
         saveBT = (Button) findViewById(R.id.saveButton);
         Intent intent = getIntent();
         name = intent.getStringExtra("Pname");
+        desc = intent.getStringExtra("desc");
+        image = intent.getStringExtra("image");
+        sflag = intent.getIntExtra("sflag", 0);
+
+
         TextView profName = (TextView) findViewById(R.id.profile_name);
         profName.setText(name);
 
@@ -56,18 +63,19 @@ public class CelebProfile extends Activity implements View.OnClickListener {
 
         switch (v.getId()) {
 
+            // TODO - should probably only display one of the buttons depending if the profile is currently saved or unsaved.
             case R.id.saveButton:
 
-                // Probably should also pass the stalkingFlag through so we could determine if the person needs to be saved or unsaved.
-                mydb.stalkProfile(new Profile(name, "", "", 0));
+                mydb.stalkProfile(new Profile(name, desc, image , sflag));
 
                 Intent intent = new Intent(getApplicationContext(), Search.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
 
                 break;
             case R.id.unsaveButton:
-                mydb.unstalkProfile(new Profile(name, "", "", 0));
+                mydb.unstalkProfile(new Profile(name, desc, image , sflag));
 
+                // This intent doesn't seem to be working.
                 Intent intent2 = new Intent(getApplicationContext(), Search.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent2);
 

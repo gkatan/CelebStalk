@@ -30,7 +30,6 @@ public class Search extends AppCompatActivity
     ListView listView;
     DBHelper mydb;
 
-    TextView idid, pname, note, date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,11 +62,13 @@ public class Search extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                pname = (TextView) view.findViewById(R.id.pname);
-                String pname2 = pname.getText().toString();
+                Profile p = mydb.getAllProfiles().get(position);
 
                 Intent intent = new Intent(getApplicationContext(), CelebProfile.class);
-                intent.putExtra("Pname", pname2);
+                intent.putExtra("Pname", p.getName());
+                intent.putExtra("desc", p.getDescription());
+                intent.putExtra("image", p.getImage());
+                intent.putExtra("sflag", p.getStalkingFlag());
 
                 startActivity(intent);
             }
