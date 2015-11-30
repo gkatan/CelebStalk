@@ -73,8 +73,8 @@ public class CustomAdapter extends BaseAdapter {
         name.setText(entries.get(index).getName());
         desc.setText( entries.get(index).getDescription());
 
-        Uri imgUri= Uri.parse(entries.get(index).getImage());
-        image.setImageURI(imgUri);
+        //Uri imgUri= Uri.parse(entries.get(index).getImage());
+        //image.setImageURI(imgUri);
 
         return view;
     }

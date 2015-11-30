@@ -10,6 +10,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.sql.SQLException;
 
@@ -44,6 +45,8 @@ public class CelebProfile extends Activity implements View.OnClickListener {
         saveBT = (Button) findViewById(R.id.saveButton);
         Intent intent = getIntent();
         name = intent.getStringExtra("Pname");
+        TextView profName = (TextView) findViewById(R.id.profile_name);
+        profName.setText(name);
 
         saveBT.setOnClickListener(this);
     }
