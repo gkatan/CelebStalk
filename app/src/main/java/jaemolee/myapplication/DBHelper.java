@@ -1,17 +1,11 @@
 package jaemolee.myapplication;
 
-        import java.text.SimpleDateFormat;
         import java.util.ArrayList;
-        import java.util.Date;
-        import java.util.Locale;
-
         import android.content.ContentValues;
         import android.content.Context;
         import android.database.Cursor;
-        import android.database.DatabaseUtils;
         import android.database.sqlite.SQLiteOpenHelper;
         import android.database.sqlite.SQLiteDatabase;
-        import android.widget.Toast;
 
 // A lot of the format of the code comes from http://www.androidhive.info/2013/09/android-sqlite-database-with-multiple-tables/
 
@@ -89,7 +83,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(A_NAME, a.getName());
         contentValues.put(A_FORUM, a.getForum());
         contentValues.put(A_TEXT, a.getText());
-        contentValues.put(A_DATE, getDateTime());
+        contentValues.put(A_DATE, a.getDate());
 
         return db.insert(P_TABLE_NAME, null, contentValues);
     }
@@ -113,6 +107,41 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return array_list;
     }
+
+    public String[] getAllNames() {
+        int size = getAllProfiles().size();
+
+        String[] A = new String[size];
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select " + P_NAME + " from " + P_TABLE_NAME, null );
+        res.moveToFirst();
+
+        int count = 0;
+        while(!res.isAfterLast()){
+            A[count] = (res.getString(res.getColumnIndex(P_NAME)));
+            res.moveToNext();
+            count++;
+        }
+        return A;
+    }
+
+    public String[] getMyNames() {
+        int size = getMyProfiles().size();
+
+        String[] A = new String[size];
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select " + P_NAME + " from " + P_TABLE_NAME + " where " + P_STALKING_FLAG + "= 1", null );
+        res.moveToFirst();
+
+        int count = 0;
+        while(!res.isAfterLast()){
+            A[count] = (res.getString(res.getColumnIndex(P_NAME)));
+            res.moveToNext();
+            count++;
+        }
+        return A;
+    }
+
 
     // return array list of only the profiles you are stalking.
     public ArrayList<Profile> getMyProfiles()
@@ -140,7 +169,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<Action> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from " + A_TABLE_NAME, null );
+        Cursor res =  db.rawQuery( "select * from " + A_TABLE_NAME, null ); // Order by date?
         res.moveToFirst();
 
         while(!res.isAfterLast()){
@@ -190,7 +219,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // updating row
         return db.update(P_TABLE_NAME, contentValues, P_NAME + " = ?",
-                new String[] { String.valueOf(p.getName()) });
+                new String[]{String.valueOf(p.getName())});
     }
 
     // Add profile to My list
@@ -214,7 +243,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(A_NAME, a.getName());
         contentValues.put(A_FORUM, a.getForum());
         contentValues.put(A_TEXT, a.getText());
-        contentValues.put(A_DATE, getDateTime());
+        contentValues.put(A_DATE, a.getDate());
         // updating row
         return db.update(A_TABLE_NAME, contentValues, A_ID + " = ?",
                 new String[] { String.valueOf(a.getId()) });
@@ -230,14 +259,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // return count
         return count;
-    }
-
-    // get DateTime
-    private String getDateTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        Date date = new Date();
-        return dateFormat.format(date);
     }
 
     // closing database
