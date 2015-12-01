@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity
         int count = mydb.getProfileCount();
 
         // TODO: Use a more specific parent
+        //
         final ViewGroup parentView = (ViewGroup) getWindow().getDecorView().getRootView();
         // TODO: Base this Tweet ID on some data from elsewhere in your app
         long tweetId = 631879971628183552L;
