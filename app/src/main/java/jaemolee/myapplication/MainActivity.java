@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,8 +14,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.*;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.tweetui.*;
+import io.fabric.sdk.android.Fabric;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,6 +30,11 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
+    private static final String TWITTER_KEY = "hkgebUK3AqafuGJYt59CWBnWy";
+    private static final String TWITTER_SECRET = "knq01FQLfSQd3JmCFkDjqeERvcdBcw1xJAuFeAkrejGLHnjlqD";
+
     DBHelper mydb;
     Button b1;
 
@@ -29,9 +42,12 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        Fabric.with(this, new Twitter(authConfig));
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -44,6 +60,23 @@ public class MainActivity extends AppCompatActivity
 
         mydb = new DBHelper(this);
         int count = mydb.getProfileCount();
+
+        // TODO: Use a more specific parent
+        //
+        final ViewGroup parentView = (ViewGroup) getWindow().getDecorView().getRootView();
+        // TODO: Base this Tweet ID on some data from elsewhere in your app
+        long tweetId = 631879971628183552L;
+        TweetUtils.loadTweet(tweetId, new Callback<Tweet>() {
+            @Override
+            public void success(Result<Tweet> result) {
+                TweetView tweetView = new TweetView(MainActivity.this, result.data);
+                parentView.addView(tweetView);
+            }
+            @Override
+            public void failure(TwitterException exception) {
+                Log.d("TwitterKit", "Load Tweet failure", exception);
+            }
+        });
 
 
         b1 = (Button) findViewById(R.id.resetdb);
