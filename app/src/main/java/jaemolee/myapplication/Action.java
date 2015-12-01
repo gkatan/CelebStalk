@@ -9,6 +9,13 @@ public class Action {
     String date;
 
 
+    public Action (String name, String forum, String text, String date) {
+        this.name = name;
+        this.forum = forum;
+        this.text = text;
+        this.date = date;
+    }
+
     public Action (String name, String forum, String text, String date, int id) {
         this.name = name;
         this.forum = forum;
