@@ -142,6 +142,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return A;
     }
 
+
     // return array list of only the profiles you are stalking.
     public ArrayList<Profile> getMyProfiles()
     {
