@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
                 mydb.deleteDB(getApplicationContext());
                 buildDB(mydb);
             }
-        });
+        }); 
 
         if (count < 1) {
             buildDB(mydb);

@@ -9,15 +9,15 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior" tools:showIn="@layout/app_bar_search"
     tools:context=".Search">
 
-    <Button
-        android:id="@+id/adding"
+    <EditText
+        android:id="@+id/searching"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Add"/>
+        android:text="Search..."/>
 
 
     <ListView
-        android:layout_below="@id/adding"
+        android:layout_below="@id/searching"
         android:id="@+id/nameList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
