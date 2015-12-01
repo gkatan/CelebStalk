@@ -108,6 +108,40 @@ public class DBHelper extends SQLiteOpenHelper {
         return array_list;
     }
 
+    public String[] getAllNames() {
+        int size = getAllProfiles().size();
+
+        String[] A = new String[size];
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select " + P_NAME + " from " + P_TABLE_NAME, null );
+        res.moveToFirst();
+
+        int count = 0;
+        while(!res.isAfterLast()){
+            A[count] = (res.getString(res.getColumnIndex(P_NAME)));
+            res.moveToNext();
+            count++;
+        }
+        return A;
+    }
+
+    public String[] getMyNames() {
+        int size = getMyProfiles().size();
+
+        String[] A = new String[size];
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select " + P_NAME + " from " + P_TABLE_NAME + " where " + P_STALKING_FLAG + "= 1", null );
+        res.moveToFirst();
+
+        int count = 0;
+        while(!res.isAfterLast()){
+            A[count] = (res.getString(res.getColumnIndex(P_NAME)));
+            res.moveToNext();
+            count++;
+        }
+        return A;
+    }
+
     // return array list of only the profiles you are stalking.
     public ArrayList<Profile> getMyProfiles()
     {
@@ -184,7 +218,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // updating row
         return db.update(P_TABLE_NAME, contentValues, P_NAME + " = ?",
-                new String[] { String.valueOf(p.getName()) });
+                new String[]{String.valueOf(p.getName())});
     }
 
     // Add profile to My list
