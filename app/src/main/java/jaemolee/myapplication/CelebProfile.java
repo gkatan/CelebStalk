@@ -1,18 +1,22 @@
 
 package jaemolee.myapplication;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
-
-import java.sql.SQLException;
 
 /**
  * Created by dannyslee12 on 2015-11-23.
@@ -24,9 +28,11 @@ import java.sql.SQLException;
  * Changed this file to be the profile of the celeb that was selected. The button now allows the user to
  * remove/add the profile from the 'saved' list. Users are not able to delete profiles from the master list.
  */
-public class CelebProfile extends Activity implements View.OnClickListener {
+public class CelebProfile extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-    Button saveBT;
+    Button saveBT, unsaveBT;
+    ImageButton facebook, twitter;
     String name, desc, image;
     int sflag;
 
@@ -38,13 +44,24 @@ public class CelebProfile extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.celeb_profile);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
 
         webView = (WebView) findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
 
         mydb = new DBHelper(this);
 
-        saveBT = (Button) findViewById(R.id.saveButton);
         Intent intent = getIntent();
         name = intent.getStringExtra("Pname");
         desc = intent.getStringExtra("desc");
@@ -55,32 +72,36 @@ public class CelebProfile extends Activity implements View.OnClickListener {
         TextView profName = (TextView) findViewById(R.id.profile_name);
         profName.setText(name);
 
-        saveBT.setOnClickListener(this);
-    }
 
-    @Override
-    public void onClick(View v) {
+        saveBT = (Button) findViewById(R.id.saveButton);
+        unsaveBT = (Button) findViewById(R.id.unsaveButton);
+        // TODO - should probably only display one of the buttons depending if the profile is currently saved or unsaved.
+        // Also - really shouldn't just go to 'saved', it should go to whatever activity was under this one.
+        saveBT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mydb.stalkProfile(new Profile(name, desc, image, sflag));
 
-        switch (v.getId()) {
-
-            // TODO - should probably only display one of the buttons depending if the profile is currently saved or unsaved.
-            case R.id.saveButton:
-
-                mydb.stalkProfile(new Profile(name, desc, image , sflag));
-
-                Intent intent = new Intent(getApplicationContext(), Search.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Intent intent = new Intent(getApplicationContext(), Saved.class);
                 startActivity(intent);
-
-                break;
-            case R.id.unsaveButton:
-                mydb.unstalkProfile(new Profile(name, desc, image , sflag));
-
-                // This intent doesn't seem to be working.
-                Intent intent2 = new Intent(getApplicationContext(), Search.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent2);
+            }
+        });
 
 
-            case R.id.button_facebook:
+        unsaveBT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mydb.unstalkProfile(new Profile(name, desc, image, sflag));
+
+                Intent intent = new Intent(getApplicationContext(), Saved.class);
+                startActivity(intent);
+            }
+        });
+
+        facebook = (ImageButton) findViewById(R.id.button_facebook);
+        facebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 webView.setWebViewClient(new WebViewClient() {
                     @Override
                     public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -89,9 +110,13 @@ public class CelebProfile extends Activity implements View.OnClickListener {
                     }
                 });
                 webView.loadUrl("https://www.facebook.com");
-                break;
+            }
+        });
 
-            case R.id.button_twitter:
+        twitter = (ImageButton) findViewById(R.id.button_twitter);
+        twitter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 webView.setWebViewClient(new WebViewClient() {
                     @Override
                     public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -100,7 +125,66 @@ public class CelebProfile extends Activity implements View.OnClickListener {
                     }
                 });
                 webView.loadUrl("https://www.twitter.com");
-                break;
+            }
+        });
+
+    }
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        } else if (id == R.id.action_about) {
+            startActivity(new Intent(CelebProfile.this, About.class));
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_profile) {
+            startActivity(new Intent(CelebProfile.this, MainActivity.class));
+            return true;
+        } else if (id == R.id.nav_search) {
+            startActivity(new Intent(CelebProfile.this, Search.class));
+            return true;
+        } else if (id == R.id.nav_saved) {
+            startActivity(new Intent(CelebProfile.this, Saved.class));
+            return true;
+        } else if (id == R.id.nav_logout) {
+            startActivity(new Intent(CelebProfile.this, Logout.class));
+            return true;
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }
