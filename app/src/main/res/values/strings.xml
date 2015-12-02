@@ -7,6 +7,9 @@
     <string name="action_settings">Settings</string>
 
     <!-- API keys for various social media apps -->
+    <string name="FABRIC_KEY">hkgebUK3AqafuGJYt59CWBnWy</string>
+    <string name="FABRIC_SECRET">knq01FQLfSQd3JmCFkDjqeERvcdBcw1xJAuFeAkrejGLHnjlqD</string>
+
     <string name="TWITTER_APIKEY">3V9ygXhOouzy4r1z4C7O9mp1T</string>
     <string name="TWITTER_APISECRET">gd5cAM19gmMzDXEzd5j9aSdY5v644rhH6ctsr6vIemLsuz1Kgy</string>
 

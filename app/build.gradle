@@ -43,9 +43,4 @@ dependencies {
     compile('com.twitter.sdk.android:twitter:1.10.0@aar') {
        transitive = true;
     }
-    //compile files('D:/Users/Iris/AndroidStudioProjects/CelebStalk/libs/twitter4jcore404.jar')
-    //compile files('D:/Users/Iris/AndroidStudioProjects/CelebStalk/libs/twitter4jasync404.jar')
-    compile files('D:/Users/Iris/AndroidStudioProjects/CelebStalk/libs/jumblr-0.0.10-jar-with-dependencies.jar')
-    //compile files('D:/Users/Iris/AndroidStudioProjects/CelebStalk/libs/signpost-commonshttp4-1.2.1.1.jar')
-    //compile files('D:/Users/Iris/AndroidStudioProjects/CelebStalk/libs/signpost-core-1.2.1.1.jar')
 }

@@ -32,12 +32,12 @@ public class CelebProfile extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Button saveBT, unsaveBT;
-    ImageButton facebook, twitter;
-    String name, desc, image;
+    ImageButton facebook, twitter, tumblr;
+    String name, desc, image, fb_username, tw_username, tmb_username;
     int sflag;
 
     DBHelper mydb;
-    WebView webView;
+    WebView preview;
 
     protected void onCreate (Bundle savedInstanceState) {
 
@@ -56,10 +56,6 @@ public class CelebProfile extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        webView = (WebView) findViewById(R.id.webView);
-        webView.getSettings().setJavaScriptEnabled(true);
-
         mydb = new DBHelper(this);
 
         Intent intent = getIntent();
@@ -67,11 +63,16 @@ public class CelebProfile extends AppCompatActivity
         desc = intent.getStringExtra("desc");
         image = intent.getStringExtra("image");
         sflag = intent.getIntExtra("sflag", 0);
-
+        tw_username = intent.getStringExtra("tw_username");
+        fb_username = intent.getStringExtra("fb_username");
+        tmb_username = intent.getStringExtra("tmb_username");
 
         TextView profName = (TextView) findViewById(R.id.profile_name);
         profName.setText(name);
 
+        preview = (WebView) findViewById(R.id.preview);
+        preview.getSettings().setJavaScriptEnabled(true);
+        preview.getSettings().setDomStorageEnabled(true);
 
         saveBT = (Button) findViewById(R.id.saveButton);
         unsaveBT = (Button) findViewById(R.id.unsaveButton);
@@ -98,33 +99,51 @@ public class CelebProfile extends AppCompatActivity
             }
         });
 
+        // Handles when the Facebook button is clicked.
         facebook = (ImageButton) findViewById(R.id.button_facebook);
         facebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                webView.setWebViewClient(new WebViewClient() {
+                preview.setWebViewClient(new WebViewClient() {
                     @Override
                     public boolean shouldOverrideUrlLoading(WebView view, String url) {
                         view.loadUrl(url);
                         return true;
                     }
                 });
-                webView.loadUrl("https://www.facebook.com");
+                preview.loadUrl("https://www.facebook.com/" + fb_username + "/");
             }
         });
 
+        // Handles when the Twitter button is clicked.
         twitter = (ImageButton) findViewById(R.id.button_twitter);
         twitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                webView.setWebViewClient(new WebViewClient() {
+                preview.setWebViewClient(new WebViewClient() {
                     @Override
                     public boolean shouldOverrideUrlLoading(WebView view, String url) {
                         view.loadUrl(url);
                         return true;
                     }
                 });
-                webView.loadUrl("https://www.twitter.com");
+                preview.loadUrl("https://www.twitter.com/" + tw_username);
+            }
+        });
+
+        // Handles when the Facebook button is clicked.
+        tumblr = (ImageButton) findViewById(R.id.button_tumblr);
+        tumblr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                preview.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        view.loadUrl(url);
+                        return true;
+                    }
+                });
+                preview.loadUrl("http://" + tmb_username + ".tumblr.com/");
             }
         });
 

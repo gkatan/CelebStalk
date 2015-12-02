@@ -43,21 +43,24 @@ public class DashAdapter extends ArrayAdapter<DashItem> {
         TextView author = (TextView) rowView.findViewById(R.id.dash_author);
         TextView post = (TextView) rowView.findViewById(R.id.dash_post_content);
         TextView date = (TextView) rowView.findViewById(R.id.dash_datetime);
+        TextView username = (TextView) rowView.findViewById(R.id.dash_username);
 
         // 4. Set the text for textViews
         author.setText(postList.get(position).getAuthor());
         post.setText(postList.get(position).getContent());
-        date.setText(postList.get(position).getDate());
 
         switch(postList.get(position).getSocMedType()){
             case "twitter":
                 SMtype.setImageResource(R.mipmap.ic_twitter);
+                username.setText(postList.get(position).getTWUsername());
                     break;
             case "facebook":
                 SMtype.setImageResource(R.mipmap.ic_facebook);
+                username.setText(postList.get(position).getFBUsername());
                 break;
             case "tumblr":
                 SMtype.setImageResource(R.mipmap.ic_tumblr);
+                username.setText(postList.get(position).getTMBUsername());
                 break;
             default:
                 SMtype.setImageResource(R.mipmap.ic_incognito);
@@ -66,9 +69,7 @@ public class DashAdapter extends ArrayAdapter<DashItem> {
 
         String imgurl = postList.get(position).getProfImgURL();
         new DownloadImageTask(profilePic).execute(imgurl);
-        //profilePic.setImageResource(R.mipmap.ic_incognito);
 
-        // 5. return rowView
         return rowView;
     }
 

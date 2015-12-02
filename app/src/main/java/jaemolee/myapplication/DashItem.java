@@ -6,6 +6,9 @@ public class DashItem {
     private String PROFILE_IMG_URL;
     private String SOCIAL_MEDIA_TYPE;
     private String content;
+    private String tw_username;
+    private String tmb_username;
+    private String fb_username;
 
     public DashItem(){
         super();
@@ -59,5 +62,29 @@ public class DashItem {
 
     public void setProfImg(String url){
         this.PROFILE_IMG_URL = url;
+    }
+
+    public String getFBUsername(){
+        return this.fb_username;
+    }
+
+    public void setFBUsername(String un){
+        this.fb_username = un;
+    }
+
+    public String getTWUsername(){
+        return this.tw_username;
+    }
+
+    public void setTWUsername(String un){
+        this.tw_username = un;
+    }
+
+    public String getTMBUsername(){
+        return this.tmb_username;
+    }
+
+    public void setTMBUsername(String un){
+        this.tmb_username = un;
     }
 }

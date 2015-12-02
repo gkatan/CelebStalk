@@ -27,6 +27,16 @@
         android:layout_toEndOf="@+id/dash_pic" />
 
     <TextView
+        android:id="@+id/dash_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="social media username"
+        android:layout_alignTop="@+id/dash_author"
+        android:layout_toRightOf="@+id/dash_author"
+        android:layout_toEndOf="@+id/dash_author"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
         android:id="@+id/dash_post_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
