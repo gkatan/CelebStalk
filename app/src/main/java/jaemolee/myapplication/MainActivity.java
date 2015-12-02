@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity
         mydb = new DBHelper(this);
         int count = mydb.getProfileCount();
 
+        /*
         // TODO: Use a more specific parent
         //
         final ViewGroup parentView = (ViewGroup) getWindow().getDecorView().getRootView();
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity
                 Log.d("TwitterKit", "Load Tweet failure", exception);
             }
         });
+        */
 
 
         b1 = (Button) findViewById(R.id.resetdb);
@@ -113,7 +115,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     // get DateTime
-    private String getDateTime(int n) {
+    private String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         Date date = new Date();
