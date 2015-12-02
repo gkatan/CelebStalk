@@ -24,10 +24,6 @@ import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.*;
 import io.fabric.sdk.android.Fabric;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -61,7 +57,6 @@ public class MainActivity extends AppCompatActivity
         mydb = new DBHelper(this);
         int count = mydb.getProfileCount();
 
-        /*
         // TODO: Use a more specific parent
         //
         final ViewGroup parentView = (ViewGroup) getWindow().getDecorView().getRootView();
@@ -78,7 +73,6 @@ public class MainActivity extends AppCompatActivity
                 Log.d("TwitterKit", "Load Tweet failure", exception);
             }
         });
-        */
 
 
         b1 = (Button) findViewById(R.id.resetdb);
@@ -89,7 +83,7 @@ public class MainActivity extends AppCompatActivity
                 mydb.deleteDB(getApplicationContext());
                 buildDB(mydb);
             }
-        }); 
+        });
 
         if (count < 1) {
             buildDB(mydb);
@@ -98,29 +92,13 @@ public class MainActivity extends AppCompatActivity
 
     public void buildDB(DBHelper mydb) {
         String default_image = "android.resource:/jaemolee.myapplication\\" + "+" +  "R.drawable.blankface";
-        mydb.insertProfile(new Profile ("Kanye West", "Rapper & designer", default_image, 0));
+        mydb.insertProfile(new Profile ("Kanye West", "rapper & designer", default_image, 0));
         mydb.insertProfile(new Profile("Barack Obama", "President of US", default_image, 0));
-        mydb.insertProfile(new Profile("Taylor Swift", "Singer & songwriter", default_image, 0));
         mydb.insertProfile(new Profile("Hillary Clinton", "Secretary of State 2009-2013", default_image, 0));
+        mydb.insertProfile(new Profile("Taylor Swift", "singer & songwriter", default_image, 0));
         mydb.insertProfile(new Profile("Daniel Radcliffe", "English actor", default_image, 0));
-        mydb.insertProfile(new Profile("Kim Kardashian", "American television & social media personality", default_image, 0));
-        mydb.insertProfile(new Profile("Beyonce", "Singer, songwriter, and actress", default_image, 0));
-        mydb.insertProfile(new Profile("Justin Bieber", "Singer & songwriter", default_image, 0));
-        mydb.insertProfile(new Profile("Oprah Winfrey", "media proprietor & talk show host", default_image, 0));
-        mydb.insertProfile(new Profile("Ellen DeGeneres", "Talk show host & comedian", default_image, 0));
-
-        // Putting in actions for the first three celebrities: Kanye West, Obama, and Hillary Clinton
-       // mydb.insertAction(new Action("Barack Obama", "facebook", "Read from EPA Administrator Gina McCarthy on why the global community is in a strong position heading into the international climate talks. http://ofa.bo/c5HX", getDateTime()));
-
     }
 
-    // get DateTime
-    private String getDateTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        Date date = new Date();
-        return dateFormat.format(date);
-    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
