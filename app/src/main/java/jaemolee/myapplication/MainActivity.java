@@ -80,7 +80,26 @@ public class MainActivity extends AppCompatActivity
         });
         */
 
+        // Tumblr stuff
+        // Authenticate via OAuth
+        JumblrClient client = new JumblrClient(
+                "dJtIrRMOzu6UwWoXHr9ZJ2LIC60Js8YRYM03W6BLZ4xVIvqBZM",
+                "Qgn5alkHpq0zC6HiNI55J20CWUNoH9EjKhmrxXCHVzfEaujwCg"
+        );
+        client.setToken(
+                "UH7tjfAYCvhvxLiuVvdr5h7W3ZIcle9mbjHeVUhfBgyliZnpEr",
+                "tq7Ybe0oGFZZtBKEeefI04X9DWM1TTKOLAk2LUK2thLk6hUsDh"
+        );
 
+        // Make the request
+        //User user = client.user();
+        Blog blog = client.blogInfo("seejohnrun.tumblr.com");
+        blog.getTitle();
+
+
+
+
+        // Database Reset button
         b1 = (Button) findViewById(R.id.resetdb);
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
