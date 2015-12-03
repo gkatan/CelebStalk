@@ -1,9 +1,13 @@
 package jaemolee.myapplication;
 
+import android.app.Activity;
+import android.content.AsyncTaskLoader;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -18,24 +22,46 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.ListView;
 
 import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.*;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.tweetui.*;
+import com.twitter.sdk.android.tweetui.CompactTweetView;
+import com.twitter.sdk.android.tweetui.TweetUtils;
+
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import io.fabric.sdk.android.Fabric;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
-    private static final String TWITTER_KEY = "hkgebUK3AqafuGJYt59CWBnWy";
-    private static final String TWITTER_SECRET = "knq01FQLfSQd3JmCFkDjqeERvcdBcw1xJAuFeAkrejGLHnjlqD";
+    private static final String FABRIC_KEY = "hkgebUK3AqafuGJYt59CWBnWy";
+    private static final String FABRIC_SECRET = "knq01FQLfSQd3JmCFkDjqeERvcdBcw1xJAuFeAkrejGLHnjlqD";
+
+    private ArrayList<DashItem> dashboard = new ArrayList<DashItem>();
 
     DBHelper mydb;
     Button b1;
@@ -45,7 +71,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(FABRIC_KEY, FABRIC_SECRET);
         Fabric.with(this, new Twitter(authConfig));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -63,25 +89,68 @@ public class MainActivity extends AppCompatActivity
         mydb = new DBHelper(this);
         int count = mydb.getProfileCount();
 
-        /*
-        // TODO: Use a more specific parent
-        //
-        final ViewGroup parentView = (ViewGroup) getWindow().getDecorView().getRootView();
-        // TODO: Base this Tweet ID on some data from elsewhere in your app
-        long tweetId = 631879971628183552L;
-        TweetUtils.loadTweet(tweetId, new Callback<Tweet>() {
+        // Adds things to the dashboard as dummy items.
+        //IDEALLY A DATABASE WOULD POPULATE EACH PERSON WITH THEIR RESPECT SOCIAL MEDIA SITE USERNAMES
+
+        String imgurl = "https://pbs.twimg.com/profile_images/585565077207678977/N_eNSBXi.jpg"; // kanye's twitter pic as test
+        DashItem newPerson = new DashItem("Kanye West", "11/17/15", imgurl , "twitter",
+                "Pusha T “Untouchable”, produced by Timbaland. http://www.good-music.com");
+        newPerson.setTWUsername("kanyewest");
+        dashboard.add(newPerson);
+
+
+        String imgurl2 = "https://api.tumblr.com/v2/blog/taylorswift.tumblr.com/avatar";
+        DashItem newPerson2 = new DashItem("Taylor Swift", "12/2/15", imgurl2, "twitter", "Making friends on Hamilton Island.");
+        newPerson2.setTWUsername("taylorswift13");
+        dashboard.add(newPerson2);
+
+        DashItem newPerson3 = new DashItem("Taylor Swift", "12/2/15", imgurl2, "tumblr", "Making friends on Hamilton Island.");
+        newPerson3.setTMBUsername("taylorswift");
+        dashboard.add(newPerson3);
+
+        DashItem newPerson4 = new DashItem("Kanye West", "1/4/14", imgurl, "facebook",
+                "Don't worry over what other people are thinking about you. They're too busy worrying over what you are thinking about them.");
+        newPerson4.setFBUsername("TheOfficialKanyeWest");
+        dashboard.add(newPerson4);
+
+        String imgurl3 = "https://pbs.twimg.com/profile_images/451007105391022080/iu1f7brY_400x400.png";
+        DashItem newPerson5 = new DashItem("Barack Obama", "12/2/15", imgurl3, "twitter",
+                "Countries all over the world are standing #UnitedOnClimate—join the conversation to be part of this historic moment: http://ofa.bo/h9ej");
+        newPerson5.setTWUsername("BarackObama");
+        dashboard.add(newPerson5);
+
+        //parseTwitter("kanyewest");
+
+        // Populates the dashboard and sets list adapters.
+        final DashAdapter adapter = new DashAdapter(this, dashboard);
+        ListView listView = (ListView) findViewById(R.id.dashboard);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void success(Result<Tweet> result) {
-                TweetView tweetView = new TweetView(MainActivity.this, result.data);
-                parentView.addView(tweetView);
-            }
-            @Override
-            public void failure(TwitterException exception) {
-                Log.d("TwitterKit", "Load Tweet failure", exception);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                DashItem item = adapter.getItem(position);
+
+                switch (item.getSocMedType()){
+                    case "twitter":
+                        Intent twitter = new Intent(MainActivity.this, TweetList.class);
+                        twitter.putExtra("tw_username", item.getTWUsername());
+                        startActivity(twitter);
+                        break;
+                    case "tumblr":
+                        Intent tumblr = new Intent(MainActivity.this, TumblrView.class);
+                        tumblr.putExtra("tmb_username", item.getTMBUsername());
+                        startActivity(tumblr);
+                        break;
+                    case "facebook":
+                        Intent fb = new Intent(MainActivity.this, FacebookView.class);
+                        fb.putExtra("fb_username", item.getFBUsername());
+                        startActivity(fb);
+                        break;
+                }
             }
         });
-        */
-
+        
         /*
         /// / Tumblr stuff
         // Authenticate via OAuth
@@ -103,7 +172,6 @@ public class MainActivity extends AppCompatActivity
         b.setText(blog.getTitle());
         */
 
-
         // Database Reset button
         b1 = (Button) findViewById(R.id.resetdb);
         b1.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +181,7 @@ public class MainActivity extends AppCompatActivity
                 mydb.deleteDB(getApplicationContext());
                 buildDB(mydb);
             }
-        }); 
+        });
 
         if (count < 1) {
             buildDB(mydb);
@@ -122,29 +190,14 @@ public class MainActivity extends AppCompatActivity
 
     public void buildDB(DBHelper mydb) {
         String default_image = "android.resource:/jaemolee.myapplication\\" + "+" +  "R.drawable.blankface";
-        mydb.insertProfile(new Profile ("Kanye West", "Rapper & designer", default_image, 0));
+        mydb.insertProfile(new Profile ("Kanye West", "rapper & designer", default_image, 0));
         mydb.insertProfile(new Profile("Barack Obama", "President of US", default_image, 0));
         mydb.insertProfile(new Profile("Taylor Swift", "Singer & songwriter", default_image, 0, "taylorswift13", "TaylorSwift", "taylorswift"));
         mydb.insertProfile(new Profile("Hillary Clinton", "Secretary of State 2009-2013", default_image, 0));
+        mydb.insertProfile(new Profile("Taylor Swift", "singer & songwriter", default_image, 0));
         mydb.insertProfile(new Profile("Daniel Radcliffe", "English actor", default_image, 0));
-        mydb.insertProfile(new Profile("Kim Kardashian", "American television & social media personality", default_image, 0));
-        mydb.insertProfile(new Profile("Beyonce", "Singer, songwriter, and actress", default_image, 0));
-        mydb.insertProfile(new Profile("Justin Bieber", "Singer & songwriter", default_image, 0));
-        mydb.insertProfile(new Profile("Oprah Winfrey", "media proprietor & talk show host", default_image, 0));
-        mydb.insertProfile(new Profile("Ellen DeGeneres", "Talk show host & comedian", default_image, 0));
-
-        // Putting in actions for the first three celebrities: Kanye West, Obama, and Hillary Clinton
-       // mydb.insertAction(new Action("Barack Obama", "facebook", "Read from EPA Administrator Gina McCarthy on why the global community is in a strong position heading into the international climate talks. http://ofa.bo/c5HX", getDateTime()));
-
     }
 
-    // get DateTime
-    private String getDateTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        Date date = new Date();
-        return dateFormat.format(date);
-    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -152,8 +205,61 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+
         }
     }
+
+    /** Populates the dashboard based on who you're following, ideally from their Twitter username.
+     public void parseTwitter(String tw_username){
+     try {
+     // Variable representing the amount of latest tweets for the JSON parser to parse.
+     int tweetCount = 5;
+
+     // URL for constructing the new JSON object.
+     String url = "{https://api.twitter.com/1.1/statuses/user_timeline.json?count="+ tweetCount + "&screen_name=" + tw_username + "}";
+     Log.d("url debug", url);
+
+     // Creating JSON object reader instance
+     JSONObject reader = new JSONObject(url);
+
+     String name = reader.getString("name");
+     String date = reader.getString("created_at");
+     String imgURL = reader.getString("profile_image_url");
+     String post = reader.getString("text");
+
+     DashItem newItem = new DashItem(name, date, imgURL, "twitter", post);
+     dashboard.add(newItem);
+
+     } catch (JSONException e) {
+     e.printStackTrace();
+     }
+     }
+
+     Populates the dashboard based on who you're following, ideally from their Twitter username.
+     public void parseTumblr(String tmb_username) throws ExecutionException, InterruptedException {
+
+     /**String url = "api.tumblr.com/v2/blog/"+ tmb_username + "/posts[/text]?api_key=" + key + "&[limit=5]";
+     JSONObject result = new JSONObject("{"+ url +"}");
+
+     JSONArray arr = result.getJSONArray("posts");
+
+     String imgURL = "https://api.tumblr.com/v2/blog/" + tmb_username + ".tumblr.com/avatar";
+     for (int i = 0; i < arr.length(); i++){
+     JSONObject jObj = arr.getJSONObject(i);
+
+     String name = jObj.getString("name");
+     String date = jObj.getString("date");
+     String post = jObj.getString("body");
+
+     DashItem newItem = new DashItem(name, date, imgURL, "tumblr", post);
+     dashboard.add(newItem);
+     }
+
+     ArrayList<DashItem> tempdash = new DownloadTumblr().execute(tmb_username).get();
+     for (int i = 0; i < 5; i++) {
+     dashboard.add(tempdash.get(i));
+     }
+     }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -180,7 +286,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+    //@Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
