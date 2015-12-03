@@ -5,7 +5,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:fitsSystemWindows="true" tools:openDrawer="start">
 
-    <include layout="@layout/app_bar_search" android:layout_width="match_parent"
+    <include layout="@layout/app_bar_celeb" android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <RelativeLayout
@@ -40,7 +40,6 @@
 
     <ImageView
         android:id="@+id/profile_img"
-        android:src="@mipmap/ic_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
