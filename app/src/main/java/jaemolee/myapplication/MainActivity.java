@@ -1,14 +1,7 @@
 package jaemolee.myapplication;
 
-import android.app.Activity;
-import android.content.AsyncTaskLoader;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,41 +11,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.tweetui.CompactTweetView;
-import com.twitter.sdk.android.tweetui.TweetUtils;
 
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import io.fabric.sdk.android.Fabric;
+import com.tumblr.*;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -150,8 +118,7 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-        
-        /*
+
         /// / Tumblr stuff
         // Authenticate via OAuth
         JumblrClient client = new JumblrClient(
@@ -164,13 +131,13 @@ public class MainActivity extends AppCompatActivity
         );
 
         // Make the request
-        //User user = client.user();
-        Blog blog = client.blogInfo("seejohnrun.tumblr.com");
+        User user = client.user();
+        //Blog blog = client.blogInfo("seejohnrun.tumblr.com");
 
 
-        TextView b = (TextView) findViewById(R.id.blogText);
-        b.setText(blog.getTitle());
-        */
+        //TextView b = (TextView) findViewById(R.id.blogText);
+        //b.setText(blog.getTitle());
+
 
         // Database Reset button
         b1 = (Button) findViewById(R.id.resetdb);
