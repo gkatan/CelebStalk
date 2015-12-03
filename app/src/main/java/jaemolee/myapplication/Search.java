@@ -14,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -26,9 +28,10 @@ import java.util.ArrayList;
 public class Search extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    Button add;
+    AutoCompleteTextView actv;
     ListView listView;
     DBHelper mydb;
+    Button save;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +74,24 @@ public class Search extends AppCompatActivity
                 intent.putExtra("sflag", p.getStalkingFlag());
 
                 startActivity(intent);
+            }
+        });
+
+        String[] people = {"Kanye West", "Hilary Clinton", "Daniel Radcliffe", "Ellen DeGeneres", "Oprah Winfrey",
+                "Justin Bieber", "Beyonce", "Kim Kardashian", "Taylor Swift", "Barack Obama"};
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>
+                (this,android.R.layout.simple_dropdown_item_1line, people);
+
+        actv = (AutoCompleteTextView) findViewById(R.id.autoCompleteInput);
+        actv.setAdapter(adapter2);
+
+        String text = this.actv.getEditableText().toString();
+
+        save = (Button) findViewById(R.id.search);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 
@@ -135,4 +156,7 @@ public class Search extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+
 }

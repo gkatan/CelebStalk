@@ -9,15 +9,22 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior" tools:showIn="@layout/app_bar_search"
     tools:context=".Search">
 
-    <EditText
-        android:id="@+id/searching"
+    <AutoCompleteTextView
+        android:id="@+id/autoCompleteInput"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="Search..."/>
 
+    <Button
+        android:id="@+id/search"
+        android:layout_below="@id/autoCompleteInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        />
 
     <ListView
-        android:layout_below="@id/searching"
+        android:layout_below="@id/search"
         android:id="@+id/nameList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
