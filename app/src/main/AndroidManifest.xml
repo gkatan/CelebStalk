@@ -22,7 +22,7 @@
         </activity>
         <activity
             android:name=".About"
-            android:label="@string/app_name"
+            android:label="@string/app_about"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +30,7 @@
         </activity>
         <activity
             android:name=".CelebProfile"
-            android:label="@string/app_name"
+            android:label="@string/app_profile"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +38,7 @@
         </activity>
         <activity
             android:name=".Search"
-            android:label="@string/app_name"
+            android:label="@string/app_search"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,7 +46,7 @@
         </activity>
         <activity
             android:name=".Saved"
-            android:label="@string/app_name"
+            android:label="@string/app_saved"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

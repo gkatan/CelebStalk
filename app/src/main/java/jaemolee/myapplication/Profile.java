@@ -2,13 +2,13 @@ package jaemolee.myapplication;
 
 public class Profile {
 
-    String name;
-    String description;
-    String image; // This should be a text path to the source.
-    int stalkingFlag;
-    String facebookName;
-    String twitterName;
-    String tumblrName;
+    private String name;
+    private String description;
+    private String image; // This should be a text path to the source.
+    private int stalkingFlag;
+    private String facebookName;
+    private String twitterName;
+    private String tumblrName;
 
     // TODO - add Twitter/facebook account names.
 
@@ -18,7 +18,9 @@ public class Profile {
         description = null;
         image = null;
         stalkingFlag = 0;
-
+        this.facebookName = "";
+        this.twitterName = "";
+        this.tumblrName = "";
     }
 
     public Profile(String name, String description, String image, int stalkingFlag) {
@@ -26,6 +28,9 @@ public class Profile {
         this.description = description;
         this.image = image;
         this.stalkingFlag = stalkingFlag;
+        this.facebookName = "";
+        this.twitterName = "";
+        this.tumblrName = "";
     }
 
     public Profile(String name, String description, String image, int stalkingFlag, String twitterName, String facebookName, String tumblrName) {

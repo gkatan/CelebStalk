@@ -1,14 +1,7 @@
 package jaemolee.myapplication;
 
-import android.app.Activity;
-import android.content.AsyncTaskLoader;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,20 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import io.fabric.sdk.android.Fabric;
 
+import java.util.ArrayList;
+import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -67,6 +55,7 @@ public class MainActivity extends AppCompatActivity
 
         mydb = new DBHelper(this);
         int count = mydb.getProfileCount();
+
 
         // Adds things to the dashboard as dummy items.
         //IDEALLY A DATABASE WOULD POPULATE EACH PERSON WITH THEIR RESPECT SOCIAL MEDIA SITE USERNAMES
@@ -129,27 +118,7 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-        
-        /*
-        /// / Tumblr stuff
-        // Authenticate via OAuth
-        JumblrClient client = new JumblrClient(
-                "dJtIrRMOzu6UwWoXHr9ZJ2LIC60Js8YRYM03W6BLZ4xVIvqBZM",
-                "Qgn5alkHpq0zC6HiNI55J20CWUNoH9EjKhmrxXCHVzfEaujwCg"
-        );
-        client.setToken(
-                "UH7tjfAYCvhvxLiuVvdr5h7W3ZIcle9mbjHeVUhfBgyliZnpEr",
-                "tq7Ybe0oGFZZtBKEeefI04X9DWM1TTKOLAk2LUK2thLk6hUsDh"
-        );
 
-        // Make the request
-        //User user = client.user();
-        Blog blog = client.blogInfo("seejohnrun.tumblr.com");
-
-
-        TextView b = (TextView) findViewById(R.id.blogText);
-        b.setText(blog.getTitle());
-        */
 
         // Database Reset button
         b1 = (Button) findViewById(R.id.resetdb);
@@ -250,8 +219,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // automatically handle clicks on the Home/Up button
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
