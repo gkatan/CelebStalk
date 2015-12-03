@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.TextView;
+
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.*;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -80,7 +82,8 @@ public class MainActivity extends AppCompatActivity
         });
         */
 
-        // Tumblr stuff
+        /*
+        /// / Tumblr stuff
         // Authenticate via OAuth
         JumblrClient client = new JumblrClient(
                 "dJtIrRMOzu6UwWoXHr9ZJ2LIC60Js8YRYM03W6BLZ4xVIvqBZM",
@@ -94,9 +97,11 @@ public class MainActivity extends AppCompatActivity
         // Make the request
         //User user = client.user();
         Blog blog = client.blogInfo("seejohnrun.tumblr.com");
-        blog.getTitle();
 
 
+        TextView b = (TextView) findViewById(R.id.blogText);
+        b.setText(blog.getTitle());
+        */
 
 
         // Database Reset button
@@ -119,7 +124,7 @@ public class MainActivity extends AppCompatActivity
         String default_image = "android.resource:/jaemolee.myapplication\\" + "+" +  "R.drawable.blankface";
         mydb.insertProfile(new Profile ("Kanye West", "Rapper & designer", default_image, 0));
         mydb.insertProfile(new Profile("Barack Obama", "President of US", default_image, 0));
-        mydb.insertProfile(new Profile("Taylor Swift", "Singer & songwriter", default_image, 0));
+        mydb.insertProfile(new Profile("Taylor Swift", "Singer & songwriter", default_image, 0, "taylorswift13", "TaylorSwift", "taylorswift"));
         mydb.insertProfile(new Profile("Hillary Clinton", "Secretary of State 2009-2013", default_image, 0));
         mydb.insertProfile(new Profile("Daniel Radcliffe", "English actor", default_image, 0));
         mydb.insertProfile(new Profile("Kim Kardashian", "American television & social media personality", default_image, 0));

@@ -6,6 +6,9 @@ public class Profile {
     String description;
     String image; // This should be a text path to the source.
     int stalkingFlag;
+    String facebookName;
+    String twitterName;
+    String tumblrName;
 
     // TODO - add Twitter/facebook account names.
 
@@ -15,6 +18,7 @@ public class Profile {
         description = null;
         image = null;
         stalkingFlag = 0;
+
     }
 
     public Profile(String name, String description, String image, int stalkingFlag) {
@@ -22,6 +26,16 @@ public class Profile {
         this.description = description;
         this.image = image;
         this.stalkingFlag = stalkingFlag;
+    }
+
+    public Profile(String name, String description, String image, int stalkingFlag, String twitterName, String facebookName, String tumblrName) {
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.stalkingFlag = stalkingFlag;
+        this.twitterName = twitterName;
+        this.facebookName = facebookName;
+        this.tumblrName = tumblrName;
     }
 
     // setters
@@ -57,5 +71,18 @@ public class Profile {
     public int getStalkingFlag() {
         return this.stalkingFlag;
     }
+
+    public String getTwitterName() {
+        return this.twitterName;
+    }
+
+    public String getFacebookName() {
+        return this.facebookName;
+    }
+
+    public String getTumblrName() {
+        return this.tumblrName;
+    }
 }
+
 

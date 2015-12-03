@@ -18,6 +18,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String P_IMAGE = "image";
     public static final String P_DESCRIPTION = "description";
     public static final String P_STALKING_FLAG = "stalking_flag";
+    public static final String P_TWITTER_NAME = "twitter_name";
+    public static final String P_FACEBOOK_NAME = "facebook_name";
+    public static final String P_TUMBLR_NAME = "tumblr_name";
+
 
     // Actions table
     public static final String A_TABLE_NAME = "Actions";
@@ -31,7 +35,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_PROFILE = "CREATE TABLE "
             + P_TABLE_NAME + " (" + P_NAME + " TEXT PRIMARY KEY, "
             + P_IMAGE + " TEXT, " + P_DESCRIPTION + " TEXT, "
-            + P_STALKING_FLAG + " INTEGER" + ")";
+            + P_STALKING_FLAG + " INTEGER "
+            + P_TWITTER_NAME + " TEXT "
+            + P_FACEBOOK_NAME + " TEXT "
+            + P_TUMBLR_NAME + " TEXT " + ")";
 
     // Actions table create statement
     public static final String CREATE_TABLE_ACTIONS = "CREATE TABLE "
@@ -70,6 +77,10 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(P_IMAGE, p.getImage());
         contentValues.put(P_DESCRIPTION, p.getDescription());
         contentValues.put(P_STALKING_FLAG, p.getStalkingFlag());
+        contentValues.put(P_TWITTER_NAME, p.getTwitterName());
+        contentValues.put(P_FACEBOOK_NAME, p.getFacebookName());
+        contentValues.put(P_TUMBLR_NAME, p.getTumblrName());
+
 
         db.insert(P_TABLE_NAME, null, contentValues);
         return true;
@@ -101,7 +112,10 @@ public class DBHelper extends SQLiteOpenHelper {
             array_list.add( new Profile (res.getString(res.getColumnIndex(P_NAME)),
                     res.getString(res.getColumnIndex(P_IMAGE)),
                     res.getString(res.getColumnIndex(P_DESCRIPTION)),
-                    res.getInt(res.getColumnIndex(P_STALKING_FLAG))
+                    res.getInt(res.getColumnIndex(P_STALKING_FLAG)),
+                    res.getString(res.getColumnIndex(P_TWITTER_NAME)),
+                    res.getString(res.getColumnIndex(P_FACEBOOK_NAME)),
+                    res.getString(res.getColumnIndex(P_TUMBLR_NAME))
             ));
             res.moveToNext();
         }
@@ -156,7 +170,10 @@ public class DBHelper extends SQLiteOpenHelper {
             array_list.add( new Profile (res.getString(res.getColumnIndex(P_NAME)),
                     res.getString(res.getColumnIndex(P_IMAGE)),
                     res.getString(res.getColumnIndex(P_DESCRIPTION)),
-                    res.getInt(res.getColumnIndex(P_STALKING_FLAG))
+                    res.getInt(res.getColumnIndex(P_STALKING_FLAG)),
+                    res.getString(res.getColumnIndex(P_TWITTER_NAME)),
+                    res.getString(res.getColumnIndex(P_FACEBOOK_NAME)),
+                    res.getString(res.getColumnIndex(P_TUMBLR_NAME))
             ));
             res.moveToNext();
         }
@@ -216,6 +233,9 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(P_IMAGE, p.getImage());
         contentValues.put(P_DESCRIPTION, p.getDescription());
         contentValues.put(P_STALKING_FLAG, p.getStalkingFlag());
+        contentValues.put(P_TWITTER_NAME, p.getTwitterName());
+        contentValues.put(P_FACEBOOK_NAME, p.getFacebookName());
+        contentValues.put(P_TUMBLR_NAME, p.getTumblrName());
 
         // updating row
         return db.update(P_TABLE_NAME, contentValues, P_NAME + " = ?",
