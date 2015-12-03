@@ -63,9 +63,9 @@ public class CelebProfile extends AppCompatActivity
         desc = intent.getStringExtra("desc");
         image = intent.getStringExtra("image");
         sflag = intent.getIntExtra("sflag", 0);
-        tw_username = intent.getStringExtra("tw_username");
-        fb_username = intent.getStringExtra("fb_username");
-        tmb_username = intent.getStringExtra("tmb_username");
+        tw_username = intent.getStringExtra("twitter");
+        fb_username = intent.getStringExtra("facebook");
+        tmb_username = intent.getStringExtra("tumblr");
 
         TextView profName = (TextView) findViewById(R.id.profile_name);
         profName.setText(name);
