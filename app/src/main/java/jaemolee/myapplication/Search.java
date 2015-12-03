@@ -31,7 +31,7 @@ public class Search extends AppCompatActivity
     AutoCompleteTextView actv;
     ListView listView;
     DBHelper mydb;
-    Button save;
+    Button search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,12 +85,21 @@ public class Search extends AppCompatActivity
         actv = (AutoCompleteTextView) findViewById(R.id.autoCompleteInput);
         actv.setAdapter(adapter2);
 
-        String text = this.actv.getEditableText().toString();
+        //String text = this.actv.getEditableText().toString();
 
-        save = (Button) findViewById(R.id.search);
-        save.setOnClickListener(new View.OnClickListener() {
+        search = (Button) findViewById(R.id.search);
+        search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String text = actv.getEditableText().toString();
+                Profile q = mydb.getProfileByName(text);
+                Intent intent2 = new Intent(getApplicationContext(), CelebProfile.class);
+                intent2.putExtra("Pname", q.getName());
+                intent2.putExtra("desc", q.getDescription());
+                intent2.putExtra("image", q.getImage());
+                intent2.putExtra("sflag", q.getStalkingFlag());
+
+                startActivity(intent2);
 
             }
         });
