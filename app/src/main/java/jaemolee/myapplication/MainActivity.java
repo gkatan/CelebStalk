@@ -20,7 +20,6 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 
 import java.util.ArrayList;
 import io.fabric.sdk.android.Fabric;
-import com.tumblr.*;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -118,25 +117,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-
-        /// / Tumblr stuff
-        // Authenticate via OAuth
-        JumblrClient client = new JumblrClient(
-                "dJtIrRMOzu6UwWoXHr9ZJ2LIC60Js8YRYM03W6BLZ4xVIvqBZM",
-                "Qgn5alkHpq0zC6HiNI55J20CWUNoH9EjKhmrxXCHVzfEaujwCg"
-        );
-        client.setToken(
-                "UH7tjfAYCvhvxLiuVvdr5h7W3ZIcle9mbjHeVUhfBgyliZnpEr",
-                "tq7Ybe0oGFZZtBKEeefI04X9DWM1TTKOLAk2LUK2thLk6hUsDh"
-        );
-
-        // Make the request
-        User user = client.user();
-        //Blog blog = client.blogInfo("seejohnrun.tumblr.com");
-
-
-        //TextView b = (TextView) findViewById(R.id.blogText);
-        //b.setText(blog.getTitle());
 
 
         // Database Reset button
