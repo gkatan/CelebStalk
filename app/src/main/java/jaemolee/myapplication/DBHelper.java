@@ -97,7 +97,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public Profile getProfileByName(String name) {
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from " + P_TABLE_NAME + " where " + P_NAME + "= " + name, null );
+        String n = "\"" + name + "\"";
+        Cursor res =  db.rawQuery( "select * from " + P_TABLE_NAME + " where " + P_NAME + "= " + n, null );
         res.moveToFirst();
 
         Profile p = new Profile(res.getString(res.getColumnIndex(P_NAME)),
