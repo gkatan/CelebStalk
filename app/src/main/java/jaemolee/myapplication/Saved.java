@@ -60,7 +60,7 @@ public class Saved extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Profile p = mydb.getAllProfiles().get(position);
+                Profile p = mydb.getMyProfiles().get(position);
 
                 Intent intent = new Intent(getApplicationContext(), CelebProfile.class);
                 intent.putExtra("Pname", p.getName());
