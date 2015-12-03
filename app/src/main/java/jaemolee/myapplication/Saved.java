@@ -67,6 +67,9 @@ public class Saved extends AppCompatActivity
                 intent.putExtra("desc", p.getDescription());
                 intent.putExtra("image", p.getImage());
                 intent.putExtra("sflag", p.getStalkingFlag());
+                intent.putExtra("twitter", p.getTwitterName());
+                intent.putExtra("facebook", p.getFacebookName());
+                intent.putExtra("tumblr", p.getTumblrName());
                 startActivity(intent);
             }
         });
