@@ -48,6 +48,7 @@ public class DashAdapter extends ArrayAdapter<DashItem> {
         // 4. Set the text for textViews
         author.setText(postList.get(position).getAuthor());
         post.setText(postList.get(position).getContent());
+        date.setText(postList.get(position).getDate());
 
         switch(postList.get(position).getSocMedType()){
             case "twitter":

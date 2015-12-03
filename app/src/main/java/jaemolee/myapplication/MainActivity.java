@@ -89,28 +89,34 @@ public class MainActivity extends AppCompatActivity
         int count = mydb.getProfileCount();
 
         // Adds things to the dashboard as dummy items.
-        String imgurl = "https://pbs.twimg.com/profile_images/585565077207678977/N_eNSBXi.jpg"; // kanye's twitter pic as test
-        DashItem newPerson = new DashItem("Kanye West", "12/2/15", imgurl , "twitter", "post content");
-
         //IDEALLY A DATABASE WOULD POPULATE EACH PERSON WITH THEIR RESPECT SOCIAL MEDIA SITE USERNAMES
 
+        String imgurl = "https://pbs.twimg.com/profile_images/585565077207678977/N_eNSBXi.jpg"; // kanye's twitter pic as test
+        DashItem newPerson = new DashItem("Kanye West", "11/17/15", imgurl , "twitter",
+                "Pusha T “Untouchable”, produced by Timbaland. http://www.good-music.com");
         newPerson.setTWUsername("kanyewest");
         dashboard.add(newPerson);
 
 
         String imgurl2 = "https://api.tumblr.com/v2/blog/taylorswift.tumblr.com/avatar";
-        DashItem newPerson2 = new DashItem("Taylor Swift", "12/2/15", imgurl2, "twitter", "post content");
+        DashItem newPerson2 = new DashItem("Taylor Swift", "12/2/15", imgurl2, "twitter", "Making friends on Hamilton Island.");
         newPerson2.setTWUsername("taylorswift13");
         dashboard.add(newPerson2);
 
-        DashItem newPerson3 = new DashItem("Taylor Swift", "12/1/15", imgurl2, "tumblr", "post content");
+        DashItem newPerson3 = new DashItem("Taylor Swift", "12/2/15", imgurl2, "tumblr", "Making friends on Hamilton Island.");
         newPerson3.setTMBUsername("taylorswift");
         dashboard.add(newPerson3);
 
-        DashItem newPerson4 = new DashItem("Kanye West", "12/1/15", imgurl, "facebook", "post content");
+        DashItem newPerson4 = new DashItem("Kanye West", "1/4/14", imgurl, "facebook",
+                "Don't worry over what other people are thinking about you. They're too busy worrying over what you are thinking about them.");
         newPerson4.setFBUsername("TheOfficialKanyeWest");
         dashboard.add(newPerson4);
 
+        String imgurl3 = "https://pbs.twimg.com/profile_images/451007105391022080/iu1f7brY_400x400.png";
+        DashItem newPerson5 = new DashItem("Barack Obama", "12/2/15", imgurl3, "twitter",
+                "Countries all over the world are standing #UnitedOnClimate—join the conversation to be part of this historic moment: http://ofa.bo/h9ej");
+        newPerson5.setTWUsername("BarackObama");
+        dashboard.add(newPerson5);
 
         //parseTwitter("kanyewest");
 
