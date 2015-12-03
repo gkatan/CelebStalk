@@ -61,30 +61,39 @@ public class MainActivity extends AppCompatActivity
         //IDEALLY A DATABASE WOULD POPULATE EACH PERSON WITH THEIR RESPECT SOCIAL MEDIA SITE USERNAMES
 
         String imgurl = "https://pbs.twimg.com/profile_images/585565077207678977/N_eNSBXi.jpg"; // kanye's twitter pic as test
+        Profile p = mydb.getProfileByName("Kanye West");
+        p.setImage(imgurl);
+        mydb.updateProfile(p);
         DashItem newPerson = new DashItem("Kanye West", "11/17/15", imgurl , "twitter",
                 "Pusha T “Untouchable”, produced by Timbaland. http://www.good-music.com");
-        newPerson.setTWUsername("kanyewest");
+        newPerson.setTWUsername(p.getTwitterName());
         dashboard.add(newPerson);
 
 
         String imgurl2 = "https://api.tumblr.com/v2/blog/taylorswift.tumblr.com/avatar";
+        Profile p2 = mydb.getProfileByName("Taylor Swift");
+        p2.setImage(imgurl2);
+        mydb.updateProfile(p2);
         DashItem newPerson2 = new DashItem("Taylor Swift", "12/2/15", imgurl2, "twitter", "Making friends on Hamilton Island.");
-        newPerson2.setTWUsername("taylorswift13");
+        newPerson2.setTWUsername(p2.getTwitterName());
         dashboard.add(newPerson2);
 
         DashItem newPerson3 = new DashItem("Taylor Swift", "12/2/15", imgurl2, "tumblr", "Making friends on Hamilton Island.");
-        newPerson3.setTMBUsername("taylorswift");
+        newPerson3.setTMBUsername(p2.getTumblrName());
         dashboard.add(newPerson3);
 
         DashItem newPerson4 = new DashItem("Kanye West", "1/4/14", imgurl, "facebook",
                 "Don't worry over what other people are thinking about you. They're too busy worrying over what you are thinking about them.");
-        newPerson4.setFBUsername("TheOfficialKanyeWest");
+        newPerson4.setFBUsername(p.getFacebookName());
         dashboard.add(newPerson4);
 
         String imgurl3 = "https://pbs.twimg.com/profile_images/451007105391022080/iu1f7brY_400x400.png";
+        Profile p3 = mydb.getProfileByName("Barack Obama");
+        p3.setImage(imgurl3);
+        mydb.updateProfile(p3);
         DashItem newPerson5 = new DashItem("Barack Obama", "12/2/15", imgurl3, "twitter",
                 "Countries all over the world are standing #UnitedOnClimate—join the conversation to be part of this historic moment: http://ofa.bo/h9ej");
-        newPerson5.setTWUsername("BarackObama");
+        newPerson5.setTWUsername(p3.getTwitterName());
         dashboard.add(newPerson5);
 
         //parseTwitter("kanyewest");
@@ -138,8 +147,8 @@ public class MainActivity extends AppCompatActivity
 
     public void buildDB(DBHelper mydb) {
         String default_image = "android.resource:/jaemolee.myapplication\\" + "+" +  "R.drawable.blankface";
-        mydb.insertProfile(new Profile ("Kanye West", "rapper & designer", default_image, 0));
-        mydb.insertProfile(new Profile("Barack Obama", "President of US", default_image, 0));
+        mydb.insertProfile(new Profile ("Kanye West", "rapper & designer", default_image, 0, "", "TheOfficialKanyeWest", ""));
+        mydb.insertProfile(new Profile("Barack Obama", "President of US", default_image, 0, "BarackObama", "", ""));
         mydb.insertProfile(new Profile("Taylor Swift", "Singer & songwriter", default_image, 0, "taylorswift13", "TaylorSwift", "taylorswift"));
         mydb.insertProfile(new Profile("Hillary Clinton", "Secretary of State 2009-2013", default_image, 0));
         mydb.insertProfile(new Profile("Taylor Swift", "singer & songwriter", default_image, 0));

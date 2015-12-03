@@ -1,7 +1,11 @@
 package jaemolee.myapplication;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -68,13 +73,38 @@ public class CustomAdapter extends BaseAdapter {
         TextView name = (TextView) view.findViewById(R.id.pname);
         //TextView desc = (TextView) view.findViewById(R.id.note);
         ImageView image = (ImageView) view.findViewById(R.id.image);
+        String imgurl = entries.get(index).getImage();
+        new DownloadImageTask(image).execute(imgurl);
 
         name.setText(entries.get(index).getName());
-        //desc.setText( entries.get(index).getDescription());
 
-        //Uri imgUri= Uri.parse(entries.get(index).getImage());
-        //image.setImageURI(imgUri);
 
         return view;
+    }
+
+    // Downloads an image from a URL and sets an ImageView to that downloaded image.
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }
