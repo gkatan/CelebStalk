@@ -22,29 +22,15 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String P_FACEBOOK_NAME = "facebook_name";
     public static final String P_TUMBLR_NAME = "tumblr_name";
 
-
-    // Actions table
-    public static final String A_TABLE_NAME = "Actions";
-    public static final String A_NAME = "name";
-    public static final String A_FORUM = "forum";
-    public static final String A_DATE = "date";
-    public static final String A_TEXT = "text";
-    public static final String A_ID = "id";
-
     // Profile table create statement
     public static final String CREATE_TABLE_PROFILE = "CREATE TABLE "
             + P_TABLE_NAME + " (" + P_NAME + " TEXT PRIMARY KEY, "
             + P_IMAGE + " TEXT, " + P_DESCRIPTION + " TEXT, "
-            + P_STALKING_FLAG + " INTEGER "
-            + P_TWITTER_NAME + " TEXT "
-            + P_FACEBOOK_NAME + " TEXT "
+            + P_STALKING_FLAG + " INTEGER, "
+            + P_TWITTER_NAME + " TEXT, "
+            + P_FACEBOOK_NAME + " TEXT, "
             + P_TUMBLR_NAME + " TEXT " + ")";
 
-    // Actions table create statement
-    public static final String CREATE_TABLE_ACTIONS = "CREATE TABLE "
-            + A_TABLE_NAME + " (" + A_ID + " INTEGER PRIMARY KEY, "
-            + A_NAME + " TEXT, " + A_FORUM + " TEXT, "
-            + A_DATE + " DATETIME, " + A_TEXT + " TEXT" + ")";
 
     public Context context;
 
@@ -58,12 +44,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL(CREATE_TABLE_PROFILE);
-        db.execSQL(CREATE_TABLE_ACTIONS);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS" + A_TABLE_NAME + "");
         db.execSQL("DROP TABLE IF EXISTS" + P_TABLE_NAME + "");
         onCreate(db);
     }
@@ -86,19 +70,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public long insertAction (Action a)
-    {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(A_NAME, a.getName());
-        contentValues.put(A_FORUM, a.getForum());
-        contentValues.put(A_TEXT, a.getText());
-        contentValues.put(A_DATE, a.getDate());
-
-        return db.insert(P_TABLE_NAME, null, contentValues);
-    }
-
     // Returns an array list of all Profiles in the database.
     public ArrayList<Profile> getAllProfiles()
     {
@@ -109,17 +80,38 @@ public class DBHelper extends SQLiteOpenHelper {
         res.moveToFirst();
 
         while(!res.isAfterLast()){
-            array_list.add( new Profile (res.getString(res.getColumnIndex(P_NAME)),
+            array_list.add(new Profile(res.getString(res.getColumnIndex(P_NAME)),
+                    res.getString(res.getColumnIndex(P_IMAGE)),
+                    res.getString(res.getColumnIndex(P_DESCRIPTION)),
+                    res.getInt(res.getColumnIndex(P_STALKING_FLAG))
+                    ,res.getString(res.getColumnIndex(P_TWITTER_NAME)),
+                    res.getString(res.getColumnIndex(P_FACEBOOK_NAME)),
+                    res.getString(res.getColumnIndex(P_TUMBLR_NAME))
+            ));
+            res.moveToNext();
+        }
+        res.close();
+        return array_list;
+    }
+
+    public Profile getProfileByName(String name) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from " + P_TABLE_NAME + " where " + P_NAME + "= " + name, null );
+        res.moveToFirst();
+
+        Profile p = new Profile(res.getString(res.getColumnIndex(P_NAME)),
                     res.getString(res.getColumnIndex(P_IMAGE)),
                     res.getString(res.getColumnIndex(P_DESCRIPTION)),
                     res.getInt(res.getColumnIndex(P_STALKING_FLAG)),
                     res.getString(res.getColumnIndex(P_TWITTER_NAME)),
                     res.getString(res.getColumnIndex(P_FACEBOOK_NAME)),
                     res.getString(res.getColumnIndex(P_TUMBLR_NAME))
-            ));
+            );
             res.moveToNext();
-        }
-        return array_list;
+        res.close();
+        return p;
+
     }
 
     public String[] getAllNames() {
@@ -136,6 +128,7 @@ public class DBHelper extends SQLiteOpenHelper {
             res.moveToNext();
             count++;
         }
+        res.close();
         return A;
     }
 
@@ -153,6 +146,7 @@ public class DBHelper extends SQLiteOpenHelper {
             res.moveToNext();
             count++;
         }
+        res.close();
         return A;
     }
 
@@ -177,49 +171,7 @@ public class DBHelper extends SQLiteOpenHelper {
             ));
             res.moveToNext();
         }
-        return array_list;
-    }
-
-    // Returns an array list of all actions in the database.
-    public ArrayList<Action> getAllActions()
-    {
-        ArrayList<Action> array_list = new ArrayList<>();
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from " + A_TABLE_NAME, null ); // Order by date?
-        res.moveToFirst();
-
-        while(!res.isAfterLast()){
-            array_list.add( new Action (res.getString(res.getColumnIndex(A_NAME)),
-                    res.getString(res.getColumnIndex(A_FORUM)),
-                    res.getString(res.getColumnIndex(A_TEXT)),
-                    res.getString(res.getColumnIndex(A_DATE)),
-                    res.getInt(res.getColumnIndex(A_ID))
-            ));
-            res.moveToNext();
-        }
-        return array_list;
-    }
-
-    // Returns an array list of all of the given person's actions in the db.
-    // NOTE - the name MUST match the name previously used EXACTLY.
-    public ArrayList<Action> getActionsByName(String name)
-    {
-        ArrayList<Action> array_list = new ArrayList<>();
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from " + A_TABLE_NAME + " where " + A_NAME + " = " + name, null );
-        res.moveToFirst();
-
-        while(!res.isAfterLast()){
-            array_list.add( new Action (res.getString(res.getColumnIndex(A_NAME)),
-                    res.getString(res.getColumnIndex(A_FORUM)),
-                    res.getString(res.getColumnIndex(A_TEXT)),
-                    res.getString(res.getColumnIndex(A_DATE)),
-                    res.getInt(res.getColumnIndex(A_ID))
-            ));
-            res.moveToNext();
-        }
+        res.close();
         return array_list;
     }
 
@@ -254,20 +206,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return updateProfile(p);
     }
 
-    // Updating an action
-    // Matches the action by id number.
-    public int updateAction (Action a) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(A_NAME, a.getName());
-        contentValues.put(A_FORUM, a.getForum());
-        contentValues.put(A_TEXT, a.getText());
-        contentValues.put(A_DATE, a.getDate());
-        // updating row
-        return db.update(A_TABLE_NAME, contentValues, A_ID + " = ?",
-                new String[] { String.valueOf(a.getId()) });
-    }
 
     public int getProfileCount() {
         String countQuery = "SELECT  * FROM " + P_TABLE_NAME;

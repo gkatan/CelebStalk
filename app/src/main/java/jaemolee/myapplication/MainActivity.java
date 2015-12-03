@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity
         mydb = new DBHelper(this);
         int count = mydb.getProfileCount();
 
+
         // Adds things to the dashboard as dummy items.
         //IDEALLY A DATABASE WOULD POPULATE EACH PERSON WITH THEIR RESPECT SOCIAL MEDIA SITE USERNAMES
 
