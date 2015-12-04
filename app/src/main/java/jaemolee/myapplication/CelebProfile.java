@@ -36,6 +36,8 @@ public class CelebProfile extends AppCompatActivity
     String name, desc, image, fb_username, tw_username, tmb_username;
     int sflag;
 
+    Intent intent = getIntent();
+
     DBHelper mydb;
     WebView preview;
 
@@ -143,7 +145,7 @@ public class CelebProfile extends AppCompatActivity
                         return true;
                     }
                 });
-                preview.loadUrl("http://" + tmb_username + ".tumblr.com/");
+                preview.loadUrl("http://" + tmb_username + ".tumblr.com/mobile");
             }
         });
 

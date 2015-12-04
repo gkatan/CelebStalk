@@ -74,7 +74,10 @@ public class CustomAdapter extends BaseAdapter {
         //TextView desc = (TextView) view.findViewById(R.id.note);
         ImageView image = (ImageView) view.findViewById(R.id.image);
         String imgurl = entries.get(index).getImage();
-        new DownloadImageTask(image).execute(imgurl);
+
+        if (!imgurl.equals(null)){
+            new DownloadImageTask(image).execute(imgurl);
+        }
 
         name.setText(entries.get(index).getName());
 
