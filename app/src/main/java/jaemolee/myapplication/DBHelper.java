@@ -65,7 +65,6 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(P_FACEBOOK_NAME, p.getFacebookName());
         contentValues.put(P_TUMBLR_NAME, p.getTumblrName());
 
-
         db.insert(P_TABLE_NAME, null, contentValues);
         return true;
     }
