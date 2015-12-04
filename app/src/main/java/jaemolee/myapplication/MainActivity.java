@@ -57,6 +57,21 @@ public class MainActivity extends AppCompatActivity
         int count = mydb.getProfileCount();
 
 
+        // Database Reset button
+        b1 = (Button) findViewById(R.id.resetdb);
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mydb.closeDB();
+                mydb.deleteDB(getApplicationContext());
+                buildDB(mydb);
+            }
+        });
+
+        if (count < 1) {
+            buildDB(mydb);
+        }
+
         // Adds things to the dashboard as dummy items.
         //IDEALLY A DATABASE WOULD POPULATE EACH PERSON WITH THEIR RESPECT SOCIAL MEDIA SITE USERNAMES
 
@@ -108,7 +123,7 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DashItem item = adapter.getItem(position);
 
-                switch (item.getSocMedType()){
+                switch (item.getSocMedType()) {
                     case "twitter":
                         Intent twitter = new Intent(MainActivity.this, TweetList.class);
                         twitter.putExtra("tw_username", item.getTWUsername());
@@ -127,22 +142,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-
-
-        // Database Reset button
-        b1 = (Button) findViewById(R.id.resetdb);
-        b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mydb.closeDB();
-                mydb.deleteDB(getApplicationContext());
-                buildDB(mydb);
-            }
-        });
-
-        if (count < 1) {
-            buildDB(mydb);
-        }
     }
 
     public void buildDB(DBHelper mydb) {
