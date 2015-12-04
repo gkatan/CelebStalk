@@ -3,13 +3,10 @@ package jaemolee.myapplication;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 //import com.tumblr.jumblr.JumblrClient;
 //import com.tumblr.jumblr.types.Post;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Iris on 12/2/2015.
