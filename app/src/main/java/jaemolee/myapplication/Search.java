@@ -102,10 +102,6 @@ public class Search extends AppCompatActivity
                 intent2.putExtra("image", q.getImage());
                 intent2.putExtra("sflag", q.getStalkingFlag());
 
-                intent2.putExtra("twitter", q.getTwitterName());
-                intent2.putExtra("facebook", q.getFacebookName());
-                intent2.putExtra("tumblr", q.getTumblrName());
-
                 startActivity(intent2);
 
             }
